@@ -1,8 +1,18 @@
-import { Before, After, BeforeAll, AfterAll, Status } from "@cucumber/cucumber";
+import {
+  Before,
+  After,
+  BeforeAll,
+  AfterAll,
+  Status,
+  setDefaultTimeout,
+} from "@cucumber/cucumber";
 import { chromium, Browser, BrowserContext, Page } from "@playwright/test";
 import { CustomWorld } from "./custom-world";
 
 let browser: Browser;
+
+// CI + external website can be slow, give each step/hook up to 60s
+setDefaultTimeout(60 * 1000);
 
 BeforeAll(async function () {
   const isCI = process.env.CI === "true";
