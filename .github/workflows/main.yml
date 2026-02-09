@@ -23,13 +23,21 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
 
+    - name: Start API Server
+      run: |
+        docker run -d --rm --name qa-practice-api -p 8887:8081 rvancea/qa-practice-api:latest
+        sleep 5
+        curl -f http://localhost:8887/api/v1/employees || exit 1
+
     - name: Run UI Tests
       run: npm run test:ui -- --tags "@ui"
 
     - name: Run API Tests
-      # Assuming API is mockable or docker container can be spun up here
-      # For now, just running the command
       run: npm run test:api -- --tags "@api"
+
+    - name: Stop API Server
+      if: always()
+      run: docker stop qa-practice-api || true
 
     - name: Generate Report
       if: always()
