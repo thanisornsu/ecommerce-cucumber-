@@ -23,14 +23,21 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
 
+    - name: Run UI Tests
+      run: npm run test:ui -- --tags "@ui"
+
     - name: Start API Server
       run: |
         docker run -d --rm --name qa-practice-api -p 8887:8081 rvancea/qa-practice-api:latest
-        sleep 5
-        curl -f http://localhost:8887/api/v1/employees || exit 1
-
-    - name: Run UI Tests
-      run: npm run test:ui -- --tags "@ui"
+        echo "Waiting for API to be ready..."
+        for i in {1..10}; do
+          if curl -fsS http://localhost:8887/api/v1/employees/1 >/dev/null 2>&1; then
+            echo "API is up"
+            break
+          fi
+          echo "API not ready yet, retrying... ($i/10)"
+          sleep 3
+        done
 
     - name: Run API Tests
       run: npm run test:api -- --tags "@api"
