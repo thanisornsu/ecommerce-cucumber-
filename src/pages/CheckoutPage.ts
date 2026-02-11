@@ -22,6 +22,9 @@ export class CheckoutPage extends BasePage {
     }
 
     async fillDetails(details: { phone?: string, street?: string, city?: string, country?: string }) {
+        // Ensure the shipping form is visible before interacting with fields
+        await this.phoneInput.waitFor({ state: 'visible', timeout: 60_000 });
+
         if (details.phone !== undefined) {
             await this.phoneInput.fill(details.phone);
         }

@@ -11,15 +11,17 @@ import { CustomWorld } from "./custom-world";
 
 let browser: Browser;
 
-// CI + external website can be slow, give each step/hook up to 60s
+// UI tests hit an external site, so give steps/hooks more time (60s)
 setDefaultTimeout(60 * 1000);
 
 BeforeAll(async function () {
   const isCI = process.env.CI === "true";
+
   browser = await chromium.launch({
     // In CI we must run headless (no X server). Locally you still see the browser.
     headless: isCI ? true : false,
-    slowMo: isCI ? 0 : 500,
+    // CI: fast; local: small slowMo so you can see what happens
+    slowMo: isCI ? 0 : 300,
   });
 });
 

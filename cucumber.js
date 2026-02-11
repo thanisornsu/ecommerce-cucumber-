@@ -9,6 +9,7 @@ module.exports = {
     require: ["src/steps/**/*.ts", "src/support/**/*.ts"],
     paths: ["features/**/*.feature"],
     publishQuiet: true,
+    // Extra safety: default timeout for steps/hooks (ms)
     timeout: 60000,
   },
 };

@@ -86,7 +86,6 @@ Given("I proceed to checkout", async function (this: CustomWorld) {
 
 When(
   "I fill the checkout form with:",
-  { timeout: 30 * 1000 },
   async function (this: CustomWorld, dataTable) {
     const data = dataTable.rowsHash();
     await this.getCheckoutPage().fillDetails({

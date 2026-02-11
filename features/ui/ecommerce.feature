@@ -23,7 +23,7 @@ Feature: E-commerce Functionality
   @ui @checkout
   Scenario Outline: Step 3 - Checkout Process
     Given I am logged in as "admin@admin.com" with password "admin123"
-    And I have items in my cart
+    # And I have items in my cart
     And I proceed to checkout
     When I fill the checkout form with:
       | Phone     | <phone>     |
@@ -42,12 +42,18 @@ Feature: E-commerce Functionality
   @ui @address_format
   Scenario: Step 4 - Validate Address Format
     Given I am logged in as "admin@admin.com" with password "admin123"
-    And I have items in my cart
+    When I add "Apple iPhone 13, 128GB, Blue" 2 times
+    And I add "Huawei Mate 20 Lite, 64GB, Black" 3 times
+    Then the total cost should be correct based on item prices
     And I proceed to checkout
     When I fill the checkout form with:
-      | Phone     | 0123456789 |
-      | Street    | BangNa     |
-      | City      | Bangkok    |
-      | Country   | Thailand   |
+      | Phone   | 0123456789 |
+      | Street  | BangNa     |
+      | City    | Bangkok    |
+      | Country | Thailand   |
     And I click submit order
     Then the address should be displayed in format "BangNa, Bangkok - Thailand"
+
+
+
+

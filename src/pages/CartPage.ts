@@ -46,6 +46,10 @@ export class CartPage extends BasePage {
         });
         const qtyInput = item.locator('.cart-quantity-input');
 
+        // Wait for the cart item row and quantity input to be visible & enabled
+        await item.waitFor({ state: 'visible', timeout: 60_000 });
+        await qtyInput.waitFor({ state: 'visible', timeout: 60_000 });
+
         await qtyInput.fill(quantity.toString());
         await qtyInput.press('Enter');
     }
